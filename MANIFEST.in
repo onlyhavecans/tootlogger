@@ -1,2 +1,3 @@
 include README.md
-include toot_logger/templates/*.jinja2
+include toot_logger/templates/*.jinja2include versioneer.py
+include toot_logger/_version.py

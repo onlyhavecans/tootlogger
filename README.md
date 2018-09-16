@@ -11,7 +11,7 @@ At some point I'll probably need to properly handle pagination but... :shrug:
 ## Install
 
 1. Ensure you have at least Python 3.6 on your system
-1. `pip install https://onlyhavecans.works/amy/mastodon_to_dayone/archive/master.tar.gz##egg=package-1.0`
+1. `pip install https://onlyhavecans.works/amy/toot_logger/archive/master.tar.gz#egg=package-1.0`
 
 
 ## Setup
