@@ -92,7 +92,3 @@ def main():
         save_config(conf)
     else:
         print("Gosh! No toots today so no journal")
-
-
-if __name__ == '__main__':
-    main()
