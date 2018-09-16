@@ -5,4 +5,4 @@ upload: build
 	twine upload --sign dist/*
 
 clean:
-	rm dist/*
+	rm -f dist/*
