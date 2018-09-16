@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Save all your toots from Mastadon as a single journal entry in dayone
 """
@@ -6,14 +5,15 @@ import os
 import subprocess
 import sys
 from datetime import datetime
+from pathlib import Path
 
 import html2text
 import toml
-from jinja2 import Environment, FileSystemLoader, select_autoescape
+from jinja2 import Environment, select_autoescape, PackageLoader
 from mastodon import Mastodon
 
-APP_NAME = "tooter_to_dayone"
-CONFIG_FILE = "config.toml"
+APP_NAME = "toot_logger"
+CONFIG_FILE = "toot_logger.toml"
 DAYONE_CLI = "/usr/local/bin/dayone2"
 DAYONE_COMMAND = "new"
 LOCAL_TZ = datetime.now().tzinfo
@@ -25,10 +25,16 @@ def fatal(*args, **kwargs):
 
 
 def load_config():
+    global CONFIG_FILE
     try:
         return toml.load(CONFIG_FILE)
     except FileNotFoundError as e:
-        fatal("You need to copy the main config file and add your settings")
+        try:
+            # We write back to the global so that we save to the right file
+            CONFIG_FILE = os.path.join(Path.home(), f".{CONFIG_FILE}")
+            return toml.load(CONFIG_FILE)
+        except FileNotFoundError as e:
+            fatal("You need to copy the main config file and add your settings")
 
 
 def save_config(config):
@@ -49,7 +55,7 @@ def parse_toots_to_journal(toots):
     cleaned_toot_data = map(toot_cleaner, toots)
 
     jinja_env = Environment(
-        loader=FileSystemLoader('.'),
+        loader=PackageLoader(APP_NAME, "templates"),
         autoescape=select_autoescape(['html', 'xml']),
         trim_blocks=True,
         lstrip_blocks=True,
@@ -71,7 +77,7 @@ def get_latest_post_id(toots):
     return latest_toot['id']
 
 
-if __name__ == '__main__':
+def main():
     conf = load_config()
     if not os.path.isfile(DAYONE_CLI):
         fatal(f"DayOne cli {DAYONE_CLI} is not present. Please install")
@@ -81,8 +87,12 @@ if __name__ == '__main__':
     # Don't try to update things if I didn't toot
     if toots:
         journal = parse_toots_to_journal(toots)
-        subprocess.run([DAYONE_CLI, DAYONE_COMMAND], input=toots, check=True)
+        subprocess.run([DAYONE_CLI, DAYONE_COMMAND], input=journal, text=True, check=True)
         conf['last_id'] = get_latest_post_id(toots)
         save_config(conf)
     else:
         print("Gosh! No toots today so no journal")
+
+
+if __name__ == '__main__':
+    main()

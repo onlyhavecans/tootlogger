@@ -2,7 +2,7 @@ The day's toots!
 
 {% for toot in toots %}
 At {{ toot.created_at.strftime("%Y-%m-%d %H:%M:%S %Z") }} I tooted;
-{{ toot.content -}}
+{{ toot.content }}
 ---
 
 {% else %}
