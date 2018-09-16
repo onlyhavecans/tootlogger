@@ -23,14 +23,17 @@ You will need to manually generate your access token and create a config file
 1. go to `/settings/applications` and create the new app.
     - Read permissions are fine
 1. Note down the `access_token`
-1. Copy `toot_logger.toml.example` to `toot_logger.toml`
-    1. Fill out the `access_token` in the `toot_logger.toml`
-    1. Change the `instance` url if necessary
+1. Create a config file like the example below (or in this repo) in one of two places
+    1. `$HOME/.toot_logger.toml`
+    1. `toot_logger.toml` in the local directory you run the command from.
 
+
+### Config file
+```toml
+instance = "https://mastodon.social"
+access_token = "really big string"
+```
 
 ## Usage
 
-1. Put your config in one of these places
-    1. `$HOME/.toot_logger.toml`
-    1. `toot_logger.toml` in the local directory you run the command from.
 1. run `toot_logger` to log all of your toots to DayOne
