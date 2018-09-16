@@ -12,8 +12,8 @@ import toml
 from jinja2 import Environment, select_autoescape, PackageLoader
 from mastodon import Mastodon
 
-APP_NAME = "toot_logger"
-CONFIG_FILE = "toot_logger.toml"
+APP_NAME = "tootlogger"
+CONFIG_FILE = "tootlogger.toml"
 DAYONE_CLI = "/usr/local/bin/dayone2"
 DAYONE_COMMAND = "new"
 LOCAL_TZ = datetime.now().tzinfo

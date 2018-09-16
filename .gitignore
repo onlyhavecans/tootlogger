@@ -1,5 +1,4 @@
-config.toml
-toot_logger.toml
+tootlogger.toml
 
 *.pyc
 /dist/
