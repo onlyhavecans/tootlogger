@@ -12,7 +12,7 @@ If you miss a day of running this it, it will backfill up to the pagination limi
 1. Ensure you have at least Python 3.6 on your mac
     - [homebrew](https://brew.sh/) makes this easy with `brew install python`
 1. Install the [DayOne Command Line Interface](http://help.dayoneapp.com/tips-and-tutorials/command-line-interface-cli)
-1. Install toot_logger with `pip3 install tootlogger`
+1. Install tootlogger with `pip3 install tootlogger`
 
 
 ## Setup

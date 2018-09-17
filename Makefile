@@ -1,5 +1,5 @@
 build: clean
-	pipenv run python setup.py sdist bdist_wheel
+	pipenv run python setup.py sdist
 
 upload: build
 	pipenv run twine upload --sign dist/*
