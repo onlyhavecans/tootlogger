@@ -16,5 +16,6 @@ setuptools.setup(
     description='Log your Matodon toots to DayOne',
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
+    include_package_data=True,
     zip_safe=False,
 )
