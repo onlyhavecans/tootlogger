@@ -14,21 +14,21 @@ If you miss a day of running this it, it will backfill up to the pagination limi
 1. Install the [DayOne Command Line Interface](http://help.dayoneapp.com/tips-and-tutorials/command-line-interface-cli)
 1. Install tootlogger with `pip3 install tootlogger`
 
-
 ## Setup
 
 You will need to manually generate your access token and create a config file
 
-1. Log into your mastodon instance 
-1. go to `/settings/applications` and create the new app.
+1. Log into your mastodon instance
+1. go to `/settings/applications` and create the new app
     - Read permissions are fine
 1. Note down the `access_token`
+1. Repeat this for all accounts you want to log
 1. Create a config file like the example below (or in this repo) in one of two places
     1. `$HOME/.tootlogger.toml`
-    1. `tootlogger.toml` in the local directory you run the command from.
-
+    1. `tootlogger.toml` in the local directory you run the command from
 
 ### Config file
+
 ```toml
 ["account_name"]
 instance = "https://mastodon.social"
@@ -36,7 +36,6 @@ access_token = "really big string"
 ["cool account @ bofh.lol"]
 instance = "https://bofh.lol"
 access_token = "different big string"
-
 ```
 
 ## Usage
