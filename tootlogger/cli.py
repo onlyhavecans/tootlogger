@@ -1,6 +1,8 @@
+#!/usr/bin/env python3
 """
 Save all your toots from Mastadon as a single journal entry in dayone
 """
+
 import os
 import subprocess
 import sys
@@ -34,7 +36,7 @@ def load_config():
             CONFIG_FILE = os.path.join(Path.home(), f".{CONFIG_FILE}")
             return toml.load(CONFIG_FILE)
         except FileNotFoundError as e:
-            fatal("You need to copy the main config file and add your settings")
+            fatal("You need to copy the main config file & add your settings")
 
 
 def save_config(config):
@@ -82,12 +84,21 @@ def main():
     if not os.path.isfile(DAYONE_CLI):
         fatal(f"DayOne cli {DAYONE_CLI} is not present. Please install")
 
-    toots = get_toots(conf['instance'], conf['access_token'], conf.get('last_id'))
+    toots = get_toots(
+        conf['instance'],
+        conf['access_token'],
+        conf.get('last_id')
+    )
 
     # Don't try to update things if I didn't toot
     if toots:
         journal = parse_toots_to_journal(toots)
-        subprocess.run([DAYONE_CLI, DAYONE_COMMAND], input=journal, text=True, check=True)
+        subprocess.run(
+            [DAYONE_CLI, DAYONE_COMMAND],
+            input=journal,
+            text=True,
+            check=True
+        )
         conf['last_id'] = get_latest_post_id(toots)
         save_config(conf)
     else:

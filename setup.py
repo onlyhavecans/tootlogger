@@ -7,7 +7,7 @@ setuptools.setup(
     install_requires=['html2text', 'jinja2', 'mastodon.py', 'toml'],
     packages=setuptools.find_packages(),
     entry_points={
-        'console_scripts': ['tootlogger = tootlogger:main']
+        'console_scripts': ['tootlogger = tootlogger.cli:main']
     },
     url='https://onlyhavecans.works/amy/tootlogger',
     license='BSD',
