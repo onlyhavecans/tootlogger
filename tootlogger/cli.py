@@ -54,7 +54,9 @@ def get_toots(api_base_url, access_token, last_id=None):
 
 
 def parse_toots_to_journal(toots):
-    cleaned_toot_data = map(toot_cleaner, toots)
+    cleaned_toot_data = {}
+    for account, account_toots in toots.items():
+        cleaned_toot_data[account] = map(toot_cleaner, account_toots)
 
     jinja_env = Environment(
         loader=PackageLoader(APP_NAME, "templates"),
@@ -63,7 +65,7 @@ def parse_toots_to_journal(toots):
         lstrip_blocks=True,
     )
     template = jinja_env.get_template('template.jinja2')
-    return template.render(toots=cleaned_toot_data)
+    return template.render(toot_data=cleaned_toot_data)
 
 
 def toot_cleaner(toot):
@@ -84,22 +86,28 @@ def main():
     if not os.path.isfile(DAYONE_CLI):
         fatal(f"DayOne cli {DAYONE_CLI} is not present. Please install")
 
-    toots = get_toots(
-        conf['instance'],
-        conf['access_token'],
-        conf.get('last_id')
+    toots = {}
+    for account, settings in conf.items():
+        toots[account] = get_toots(
+            settings['instance'],
+            settings['access_token'],
+            settings.get('last_id')
+        )
+
+    journal = parse_toots_to_journal(toots)
+    subprocess.run(
+        [DAYONE_CLI, DAYONE_COMMAND],
+        input=journal,
+        text=True,
+        check=True,
     )
 
-    # Don't try to update things if I didn't toot
-    if toots:
-        journal = parse_toots_to_journal(toots)
-        subprocess.run(
-            [DAYONE_CLI, DAYONE_COMMAND],
-            input=journal,
-            text=True,
-            check=True
-        )
-        conf['last_id'] = get_latest_post_id(toots)
-        save_config(conf)
-    else:
-        print("Gosh! No toots today so no journal")
+    for account, toot_list in toots.items():
+        if toot_list:
+            conf[account]['last_id'] = get_latest_post_id(toot_list)
+
+    save_config(conf)
+
+
+if __name__ == '__main__':
+    main()

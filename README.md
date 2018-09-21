@@ -30,8 +30,13 @@ You will need to manually generate your access token and create a config file
 
 ### Config file
 ```toml
+["account_name"]
 instance = "https://mastodon.social"
 access_token = "really big string"
+["cool account @ bofh.lol"]
+instance = "https://bofh.lol"
+access_token = "different big string"
+
 ```
 
 ## Usage

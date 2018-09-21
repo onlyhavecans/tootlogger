@@ -1,4 +1,4 @@
-.PHONY: clean clean-test clean-pyc clean-build
+.PHONY: clean clean-test clean-pyc clean-build upload
 
 dist: clean
 	pipenv run python setup.py sdist
