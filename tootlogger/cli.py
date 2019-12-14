@@ -30,12 +30,12 @@ def load_config():
     global CONFIG_FILE
     try:
         return toml.load(CONFIG_FILE)
-    except FileNotFoundError as e:
+    except FileNotFoundError:
         try:
             # We write back to the global so that we save to the right file
             CONFIG_FILE = os.path.join(Path.home(), f".{CONFIG_FILE}")
             return toml.load(CONFIG_FILE)
-        except FileNotFoundError as e:
+        except FileNotFoundError:
             fatal("You need to copy the main config file & add your settings")
 
 
