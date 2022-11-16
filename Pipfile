@@ -8,10 +8,13 @@ name = "pypi"
 "jinja2" = "*"
 "mastodon.py" = "*"
 "toml" = "*"
+tootlogger = {editable = true, path = "."}
 
 [dev-packages]
 "versioneer" = "*"
 "twine" = "*"
+autopep8 = "*"
+pylance = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.10"
