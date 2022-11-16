@@ -17,10 +17,10 @@ setuptools.setup(
     entry_points={
         'console_scripts': ['tootlogger = tootlogger.cli:main']
     },
-    url='https://onlyhavecans.works/amy/tootlogger',
+    url='https://github.com/onlyhavecans/tootlogger',
     license='BSD',
-    author='Amy Aronsohn',
-    author_email='WagThatTail@Me.com',
+    author='Amelia Aronsohn',
+    author_email='squirrel@wearing.black',
     description='Log your Matodon toots to DayOne',
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
