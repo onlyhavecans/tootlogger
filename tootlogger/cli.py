@@ -4,6 +4,7 @@ Save all your toots from Mastadon as a single journal entry in dayone
 """
 
 import os
+import shutil
 import subprocess
 import sys
 from datetime import datetime
@@ -16,7 +17,7 @@ from mastodon import Mastodon
 
 APP_NAME = "tootlogger"
 CONFIG_FILE = "tootlogger.toml"
-DAYONE_CLI = "/usr/local/bin/dayone2"
+DAYONE_CLI = "dayone2"
 DAYONE_COMMAND = "new"
 LOCAL_TZ = datetime.now().tzinfo
 
@@ -83,8 +84,9 @@ def get_latest_post_id(toots):
 
 def main():
     conf = load_config()
-    if not os.path.isfile(DAYONE_CLI):
-        fatal(f"DayOne cli {DAYONE_CLI} is not present. Please install")
+    cli = shutil.which(DAYONE_CLI)
+    if not cli:
+        fatal(f"DayOne cli {cli} is not present. Please install")
 
     toots = {}
     for account, settings in conf.items():
@@ -94,7 +96,7 @@ def main():
 
     journal = parse_toots_to_journal(toots)
     subprocess.run(
-        [DAYONE_CLI, DAYONE_COMMAND],
+        [cli, DAYONE_COMMAND],
         input=journal,
         text=True,
         check=True,
