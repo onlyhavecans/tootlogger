@@ -4,7 +4,7 @@ dist: clean
 	poetry build
 	ls -l dist
 
-upload: build
+upload: dist
 	poetry publish
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
