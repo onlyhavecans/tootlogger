@@ -5,14 +5,14 @@
 Take all your toots and make a [DayOne](https://dayoneapp.com/) journal entry.
 
 This saves the last seen toot id so subsequent runs will only show all the toots since then.
-If you miss a day of running this it, it will backfill up to the pagination limit.
+If you miss a day of running this it, it will back fill up to the pagination limit.
 
 ## Install
 
-1. Ensure you have at least Python 3.6 on your mac
+1. Ensure you have at least Python 3.7 on your Mac
     - [homebrew](https://brew.sh/) makes this easy with `brew install python`
 1. Install the [DayOne Command Line Interface](http://help.dayoneapp.com/tips-and-tutorials/command-line-interface-cli)
-1. Install tootlogger with `pip3 install tootlogger`
+1. Install tootlogger with `python3 -m pip install tootlogger`
 
 ## Setup
 

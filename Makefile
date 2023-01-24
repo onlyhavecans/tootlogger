@@ -1,12 +1,11 @@
 .PHONY: clean clean-test clean-pyc clean-build upload
 
 dist: clean
-	pipenv run python setup.py sdist
-	pipenv run python setup.py bdist_wheel
+	poetry build
 	ls -l dist
 
 upload: build
-	pipenv run twine upload --sign dist/*
+	poetry publish
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 

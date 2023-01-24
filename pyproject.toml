@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "tootlogger"
+version = "0.4.4"
+description = "Log your Mastodon toots to DayOne"
+authors = ["Amelia Aronsohn <squirrel@wearing.black>"]
+license = "BSD"
+readme = "README.md"
+repository = "https://github.com/onlyhavecans/tootlogger"
+keywords = ["social media", "mastodon"]
+classifiers=[
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Natural Language :: English",
+    "Operating System :: MacOS :: MacOS X",
+    "Topic :: Utilities",
+]
+
+
+[tool.poetry.dependencies]
+python = "^3.11"
+"mastodon.py" = "^1.6"
+toml = "^0.10.2"
+html2text = "^2020.1.16"
+Jinja2 = "^3.1.2"
+
+[tool.poetry.scripts]
+tootlogger = 'tootlogger.cli:main'
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

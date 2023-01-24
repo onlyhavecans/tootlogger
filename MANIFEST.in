@@ -1,4 +1,0 @@
-include README.md
-include tootlogger/templates/*.jinja2
-include tootlogger/_version.py
-include versioneer.py
