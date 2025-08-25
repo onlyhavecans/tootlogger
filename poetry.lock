@@ -241,14 +241,14 @@ files = [
 
 [[package]]
 name = "mastodon-py"
-version = "2.1.0"
+version = "2.1.2"
 description = "Python wrapper for the Mastodon API"
 optional = false
 python-versions = "*"
 groups = ["main"]
 files = [
-    {file = "mastodon_py-2.1.0-py3-none-any.whl", hash = "sha256:96d0e17f2c00fcc3d688b40812174af86c1f3a352bc584fc22e41b3e859a7ef9"},
-    {file = "mastodon_py-2.1.0.tar.gz", hash = "sha256:ddab1cfd3e1d07e84dbca11cfde6c16128cccce8d8c69401cfc3def4265396cc"},
+    {file = "mastodon_py-2.1.2-py3-none-any.whl", hash = "sha256:c1caa16e5eec22c3f4aba25131d7c8ad7954607d976271b0a0a81797f79834b1"},
+    {file = "mastodon_py-2.1.2.tar.gz", hash = "sha256:e06cdcc937fa5ac704ac3b107a2e5fe49a0ee26bf46d30015fa1774bdd1e0c0c"},
 ]
 
 [package.dependencies]
