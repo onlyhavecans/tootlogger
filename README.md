@@ -9,10 +9,10 @@ If you miss a day of running this it, it will back fill up to the pagination lim
 
 ## Install
 
-1. Ensure you have at least Python 3.7 on your Mac
+1. Ensure you have Python 3.11+ on your Mac
     - [homebrew](https://brew.sh/) makes this easy with `brew install python`
 1. Install the [DayOne Command Line Interface](http://help.dayoneapp.com/tips-and-tutorials/command-line-interface-cli)
-1. Install tootlogger with `python3 -m pip install tootlogger`
+1. Install tootlogger with `pip install tootlogger` or `uv tool install tootlogger`
 
 ## Setup
 
