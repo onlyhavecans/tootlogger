@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - name: Install uv
-        uses: actions/setup-uv@v7
+        uses: actions/setup-uv@ed21f2f24f8dd64503750218de024bcf64c7250a # v7
 
       - name: Set up Python
         run: uv python install
