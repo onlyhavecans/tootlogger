@@ -85,11 +85,10 @@ def parse_toots_to_journal(toots: dict[str, list[Status]]) -> str:
     html_parser = html2text.HTML2Text(bodywidth=0)
     local_tz = get_local_tz()
 
-    cleaned_toot_data: dict[str, list[CleanedToot]] = {}
-    for account, account_toots in toots.items():
-        cleaned_toot_data[account] = [
-            toot_cleaner(t, html_parser, local_tz) for t in account_toots
-        ]
+    cleaned_toot_data: dict[str, list[CleanedToot]] = {
+        account: [toot_cleaner(t, html_parser, local_tz) for t in account_toots]
+        for account, account_toots in toots.items()
+    }
 
     jinja_env = Environment(
         loader=PackageLoader(APP_NAME, "templates"),
