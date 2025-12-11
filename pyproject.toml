@@ -20,7 +20,7 @@ dependencies = [
   "Jinja2>=3.1.2",
   "html2text>=2020.1.16",
   "mastodon.py>=1.6",
-  "toml>=0.10.2",
+  "tomli-w>=1.0",
 ]
 
 [project.urls]
@@ -31,6 +31,8 @@ tootlogger = "tootlogger.cli:main"
 
 [dependency-groups]
 dev = [
+  "basedpyright>=1.22",
+  "pytest>=8.0",
   "ruff>=0.8",
 ]
 
@@ -40,3 +42,7 @@ build-backend = "hatchling.build"
 
 [tool.ruff]
 target-version = "py311"
+
+[tool.basedpyright]
+typeCheckingMode = "standard"
+pythonVersion = "3.11"

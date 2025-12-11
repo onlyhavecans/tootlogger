@@ -52,3 +52,18 @@ format:
 # Fix linting issues
 fix:
     uv run ruff check --fix .
+
+# Run type checker
+typecheck:
+    uv run basedpyright tootlogger/
+
+# Run tests
+test:
+    uv run pytest tests/
+
+# Run tests with verbose output
+test-v:
+    uv run pytest tests/ -v
+
+# Run all checks
+check: lint format-check typecheck test
