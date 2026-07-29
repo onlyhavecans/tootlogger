@@ -1,6 +1,6 @@
 """Tests for tootlogger CLI."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -28,23 +28,21 @@ class TestGetLocalTz:
 class TestTootCleaner:
     def test_converts_html_to_markdown(self) -> None:
         html_parser = html2text.HTML2Text(bodywidth=0)
-        local_tz = timezone.utc
+        local_tz = UTC
         toot: dict = {
-            "created_at": datetime(2024, 1, 15, 12, 30, 0, tzinfo=timezone.utc),
+            "created_at": datetime(2024, 1, 15, 12, 30, 0, tzinfo=UTC),
             "content": "<p>Hello <strong>world</strong>!</p>",
         }
 
         result = toot_cleaner(toot, html_parser, local_tz)  # type: ignore[arg-type]
 
         assert result["content"] == "Hello **world**!\n"
-        assert result["created_at"] == datetime(
-            2024, 1, 15, 12, 30, 0, tzinfo=timezone.utc
-        )
+        assert result["created_at"] == datetime(2024, 1, 15, 12, 30, 0, tzinfo=UTC)
 
     def test_preserves_timestamp_with_timezone_conversion(self) -> None:
         html_parser = html2text.HTML2Text(bodywidth=0)
-        local_tz = timezone.utc
-        original_time = datetime(2024, 1, 15, 12, 30, 0, tzinfo=timezone.utc)
+        local_tz = UTC
+        original_time = datetime(2024, 1, 15, 12, 30, 0, tzinfo=UTC)
         toot: dict = {
             "created_at": original_time,
             "content": "<p>Test</p>",
@@ -56,9 +54,9 @@ class TestTootCleaner:
 
     def test_handles_complex_html(self) -> None:
         html_parser = html2text.HTML2Text(bodywidth=0)
-        local_tz = timezone.utc
+        local_tz = UTC
         toot: dict = {
-            "created_at": datetime(2024, 1, 15, 12, 30, 0, tzinfo=timezone.utc),
+            "created_at": datetime(2024, 1, 15, 12, 30, 0, tzinfo=UTC),
             "content": '<p>Check out <a href="https://example.com">this link</a>!</p>',
         }
 
@@ -102,7 +100,7 @@ class TestParseToots:
         toots: dict[str, list] = {
             "@user@instance.social": [
                 {
-                    "created_at": datetime(2024, 1, 15, 12, 30, 0, tzinfo=timezone.utc),
+                    "created_at": datetime(2024, 1, 15, 12, 30, 0, tzinfo=UTC),
                     "content": "<p>Hello world!</p>",
                 }
             ]
@@ -119,13 +117,13 @@ class TestParseToots:
         toots: dict[str, list] = {
             "@user1@instance.social": [
                 {
-                    "created_at": datetime(2024, 1, 15, 12, 30, 0, tzinfo=timezone.utc),
+                    "created_at": datetime(2024, 1, 15, 12, 30, 0, tzinfo=UTC),
                     "content": "<p>First account</p>",
                 }
             ],
             "@user2@other.social": [
                 {
-                    "created_at": datetime(2024, 1, 15, 13, 0, 0, tzinfo=timezone.utc),
+                    "created_at": datetime(2024, 1, 15, 13, 0, 0, tzinfo=UTC),
                     "content": "<p>Second account</p>",
                 }
             ],
@@ -146,25 +144,26 @@ class TestConfigLoadSave:
             '[myaccount]\ninstance = "https://mastodon.social"\naccess_token = "secret"\n'
         )
 
-        with patch("tootlogger.cli.DEFAULT_CONFIG_FILE", str(config_file)):
-            with patch("tootlogger.cli.Path") as mock_path:
-                # Make local path exist
-                mock_local = MagicMock()
-                mock_local.exists.return_value = True
-                mock_local.__truediv__ = lambda self, x: tmp_path / x
+        with (
+            patch("tootlogger.cli.DEFAULT_CONFIG_FILE", str(config_file)),
+            patch("tootlogger.cli.Path") as mock_path,
+        ):
+            # Make local path exist
+            mock_local = MagicMock()
+            mock_local.exists.return_value = True
+            mock_local.__truediv__ = lambda self, x: tmp_path / x
 
-                # Path() returns our mock for the config file check
-                mock_path.return_value = config_file
-                mock_path.home.return_value = tmp_path
+            # Path() returns our mock for the config file check
+            mock_path.return_value = config_file
+            mock_path.home.return_value = tmp_path
 
-                # Actually read the real file
-                with patch("builtins.open", create=True) as mock_open:
-                    mock_open.return_value.__enter__.return_value.read.return_value = (
-                        config_file.read_bytes()
-                    )
+            # Actually read the real file
+            with patch("builtins.open", create=True) as mock_open:
+                mock_open.return_value.__enter__.return_value.read.return_value = (
+                    config_file.read_bytes()
+                )
 
         # Simpler approach - just test save_config directly
-        pass
 
     def test_save_config_writes_toml(self, tmp_path: Path) -> None:
         config_file = tmp_path / "config.toml"
@@ -221,9 +220,11 @@ class TestConfigLoadSave:
         original_cwd = os.getcwd()
         try:
             os.chdir(local_config.parent)
-            with patch("tootlogger.cli.DEFAULT_CONFIG_FILE", "tootlogger.toml"):
-                with patch.object(Path, "home", return_value=home_config.parent):
-                    result = load_config()
+            with (
+                patch("tootlogger.cli.DEFAULT_CONFIG_FILE", "tootlogger.toml"),
+                patch.object(Path, "home", return_value=home_config.parent),
+            ):
+                result = load_config()
 
             assert "local" in result["config"]
             assert result["path"] == Path("tootlogger.toml")
@@ -242,9 +243,11 @@ class TestConfigLoadSave:
         try:
             # Change to a directory without local config
             os.chdir(tmp_path)
-            with patch("tootlogger.cli.DEFAULT_CONFIG_FILE", "tootlogger.toml"):
-                with patch.object(Path, "home", return_value=tmp_path):
-                    result = load_config()
+            with (
+                patch("tootlogger.cli.DEFAULT_CONFIG_FILE", "tootlogger.toml"),
+                patch.object(Path, "home", return_value=tmp_path),
+            ):
+                result = load_config()
 
             assert "home" in result["config"]
         finally:
@@ -285,10 +288,12 @@ class TestMain:
         original_cwd = os.getcwd()
         try:
             os.chdir(tmp_path)
-            with patch("tootlogger.cli.DEFAULT_CONFIG_FILE", "tootlogger.toml"):
-                with patch("shutil.which", return_value=None):
-                    with pytest.raises(SystemExit) as exc_info:
-                        main()
+            with (
+                patch("tootlogger.cli.DEFAULT_CONFIG_FILE", "tootlogger.toml"),
+                patch("shutil.which", return_value=None),
+                pytest.raises(SystemExit) as exc_info,
+            ):
+                main()
 
             assert exc_info.value.code == 1
         finally:
@@ -305,7 +310,7 @@ class TestMain:
         mock_toots = [
             {
                 "id": 12345,
-                "created_at": datetime(2024, 1, 15, 12, 0, 0, tzinfo=timezone.utc),
+                "created_at": datetime(2024, 1, 15, 12, 0, 0, tzinfo=UTC),
                 "content": "<p>Test toot</p>",
             }
         ]
@@ -315,11 +320,13 @@ class TestMain:
         original_cwd = os.getcwd()
         try:
             os.chdir(tmp_path)
-            with patch("tootlogger.cli.DEFAULT_CONFIG_FILE", "tootlogger.toml"):
-                with patch("shutil.which", return_value="/usr/bin/dayone2"):
-                    with patch("tootlogger.cli.get_toots", return_value=mock_toots):
-                        with patch("subprocess.run") as mock_run:
-                            main()
+            with (
+                patch("tootlogger.cli.DEFAULT_CONFIG_FILE", "tootlogger.toml"),
+                patch("shutil.which", return_value="/usr/bin/dayone2"),
+                patch("tootlogger.cli.get_toots", return_value=mock_toots),
+                patch("subprocess.run") as mock_run,
+            ):
+                main()
 
             # Verify subprocess was called with journal content
             mock_run.assert_called_once()
@@ -346,11 +353,13 @@ class TestMain:
         original_cwd = os.getcwd()
         try:
             os.chdir(tmp_path)
-            with patch("tootlogger.cli.DEFAULT_CONFIG_FILE", "tootlogger.toml"):
-                with patch("shutil.which", return_value="/usr/bin/dayone2"):
-                    with patch("tootlogger.cli.get_toots", return_value=[]):
-                        with patch("subprocess.run") as mock_run:
-                            main()
+            with (
+                patch("tootlogger.cli.DEFAULT_CONFIG_FILE", "tootlogger.toml"),
+                patch("shutil.which", return_value="/usr/bin/dayone2"),
+                patch("tootlogger.cli.get_toots", return_value=[]),
+                patch("subprocess.run") as mock_run,
+            ):
+                main()
 
             # Should still call dayone with "no toots" message
             mock_run.assert_called_once()

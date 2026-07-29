@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Save all your toots from Mastodon as a single journal entry in DayOne
 """
@@ -7,7 +6,7 @@ import shutil
 import subprocess
 import sys
 import tomllib
-from datetime import datetime, tzinfo
+from datetime import UTC, datetime, tzinfo
 from pathlib import Path
 from typing import Any, NoReturn, NotRequired, TypedDict
 
@@ -25,7 +24,7 @@ DAYONE_COMMAND: str = "new"
 
 def get_local_tz() -> tzinfo | None:
     """Get the local timezone at runtime rather than import time."""
-    return datetime.now().tzinfo
+    return datetime.now(UTC).astimezone().tzinfo
 
 
 class CleanedToot(TypedDict):
